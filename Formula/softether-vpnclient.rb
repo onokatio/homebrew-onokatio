@@ -9,6 +9,7 @@ class SoftetherVpnclient < Formula
   license ""
 
   # depends_on "cmake" => :build
+  depends_on "tuntap"
 
   def install
     # ENV.deparallelize  # if your formula fails when building in parallel
