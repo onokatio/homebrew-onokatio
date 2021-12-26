@@ -8,9 +8,6 @@ class SoftetherVpnclient < Formula
   sha256 "8314fa05f1782b5cfc7f2928c404674b3b0000eb98717cd8ccc9ef78fb59c691"
   license ""
 
-  # depends_on "cmake" => :build
-  depends_on "tuntap"
-
   def install
     # ENV.deparallelize  # if your formula fails when building in parallel
     # Remove unrecognized options if warned by configure
