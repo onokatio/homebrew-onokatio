@@ -12,7 +12,7 @@ class Radicale < Formula
 
 
   depends_on "python@3.10"
-  # depends_on "cmake" => :build
+
   resource "defusedxml" do
     url "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz"
     sha256 "1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"
@@ -28,10 +28,10 @@ class Radicale < Formula
     sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
   end
 
-  resource "Radicale" do
-    url "https://files.pythonhosted.org/packages/be/7e/59eeb15c2583e1b6e83ca614838e1013c2b942a4f4c85b13841fdfd11664/Radicale-3.1.4.tar.gz"
-    sha256 "dddd6d5a0f3f31430fb4bebcee82275c1a946975d077e967a176fd61eefc054c"
-  end
+  #resource "Radicale" do
+  #  url "https://files.pythonhosted.org/packages/be/7e/59eeb15c2583e1b6e83ca614838e1013c2b942a4f4c85b13841fdfd11664/Radicale-3.1.4.tar.gz"
+  #  sha256 "dddd6d5a0f3f31430fb4bebcee82275c1a946975d077e967a176fd61eefc054c"
+  #end
 
   resource "libdecsync" do
     url "https://files.pythonhosted.org/packages/c1/b0/82f9ff5deb4db4bff439ed6f23ed10ccc49b193f60c15af342e217c5ab00/libdecsync-2.2.1.tar.gz"
@@ -52,17 +52,22 @@ class Radicale < Formula
   def install
     venv = virtualenv_create(libexec,"python3")
     resources.each do |r|
-      if r.name == "Radicale"
-        venv.pip_install_and_link r
-      else
+      #if r.name == "Radicale"
+      #  venv.pip_install_and_link r
+      #else
         venv.pip_install r
-      end
+      #end
     end
     venv.pip_install_and_link buildpath
 
+  end
+
+  def post_install
     #load external plugin
-    Pathname(HOMEBREW_PREFIX/"share/decsync-plugin").each_child do |r|
-      system "ln", "-s", r, libexec/"lib/python3.10/site-packages/"
+    if Pathname(HOMEBREW_PREFIX/"share/decsync-plugin").exist?
+      Pathname(HOMEBREW_PREFIX/"share/decsync-plugin").each_child do |r|
+        system "ln", "-s", r, libexec/"lib/python3.10/site-packages/"
+      end
     end
   end
 

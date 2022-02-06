@@ -19,9 +19,14 @@ class RadicaleDecsync < Formula
     venv = virtualenv_create(libexec,"python3")
     venv.pip_install_and_link buildpath
     system "mkdir", "-p", share/"decsync-plugin"
+    #export plugin
     system "ln", "-s", libexec/"lib/python3.10/site-packages/radicale_storage_decsync", share/"decsync-plugin/"
     system "ln", "-s", libexec/"lib/python3.10/site-packages/radicale_storage_decsync-2.0.0-py3.10.egg-info", share/"decsync-plugin/"
   end
+
+  #def post_install
+  #  system "brew", "postinstall", "radicale"
+  #end
 
   test do
     # `test do` will create, run in and delete a temporary directory.
