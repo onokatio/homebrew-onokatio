@@ -5,7 +5,7 @@ class Radicale < Formula
   include Language::Python::Virtualenv
   desc "CalDav and CardDav server"
   homepage "https://radicale.org/"
-  url "https://github.com/Kozea/Radicale.git"
+  url "https://github.com/Kozea/Radicale.git", :tag => "v3.1.4"
   version "3.1.4"
   sha256 ""
   license ""
@@ -33,6 +33,11 @@ class Radicale < Formula
     sha256 "dddd6d5a0f3f31430fb4bebcee82275c1a946975d077e967a176fd61eefc054c"
   end
 
+  resource "libdecsync" do
+    url "https://files.pythonhosted.org/packages/c1/b0/82f9ff5deb4db4bff439ed6f23ed10ccc49b193f60c15af342e217c5ab00/libdecsync-2.2.1.tar.gz"
+    sha256 "32e923ce3ba6bfd54bf80d26694d0afd29625ab81e46301e88474de5af371b42"
+  end
+
   resource "six" do
     url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
     sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
@@ -45,12 +50,25 @@ class Radicale < Formula
 
 
   def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
-    # Remove unrecognized options if warned by configure
-    # https://rubydoc.brew.sh/Formula.html#std_configure_args-instance_method
-    # system "./configure", *std_configure_args, "--disable-silent-rules"
-    # system "cmake", "-S", ".", "-B", "build", *std_cmake_args
-    virtualenv_install_with_resources
+    venv = virtualenv_create(libexec,"python3")
+    resources.each do |r|
+      if r.name == "Radicale"
+        venv.pip_install_and_link r
+      else
+        venv.pip_install r
+      end
+    end
+    venv.pip_install_and_link buildpath
+
+    #load external plugin
+    Pathname(HOMEBREW_PREFIX/"share/decsync-plugin").each_child do |r|
+      system "ln", "-s", r, libexec/"lib/python3.10/site-packages/"
+    end
+  end
+
+  service do
+    run opt_bin/"radicale"
+    keep_alive true
   end
 
   test do
