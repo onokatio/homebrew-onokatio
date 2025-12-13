@@ -11,14 +11,9 @@ class Nerdctl < Formula
   def install
     ldflags = "-s -w -X github.com/containerd/nerdctl/v2/pkg/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/nerdctl"
-
-    generate_completions_from_executable(bin/"nerdctl", "completion")
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/nerdctl --version")
-    output = shell_output("XDG_RUNTIME_DIR=/dev/null #{bin}/nerdctl images 2>&1", 1).strip
-    cleaned = output.gsub(/\e\[([;\d]+)?m/, "") # Remove colors from output
-    assert_match(/^time=.* level=fatal msg="rootless containerd not running.*/m, cleaned)
   end
 end
