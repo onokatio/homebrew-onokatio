@@ -15,6 +15,7 @@ class ContainerdShimNerdbox < Formula
 
   depends_on "go" => :build
   depends_on "e2fsprogs"
+  depends_on "slp/krun/libkrun"
 
   def install
     system "make", "_output/containerd-shim-nerdbox-v1"
