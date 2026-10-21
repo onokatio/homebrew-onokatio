@@ -7,6 +7,11 @@ class Container < Formula
   license "Apache-2.0"
   head "https://github.com/onokatio/container.git", branch: "balloon"
 
+  bottle do
+    root_url "https://github.com/onokatio/homebrew-onokatio/releases/download/container-1.5.0-balloon"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "c82ad6d547ac66582509bc1ab7ea12ba68cc4b636615af274f15e4ae31786db9"
+  end
+
   depends_on arch: :arm64
   depends_on macos: :tahoe
 
