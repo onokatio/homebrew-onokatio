@@ -1,9 +1,9 @@
 class Container < Formula
   desc "Create and run Linux containers using lightweight VMs (balloon fork)"
   homepage "https://apple.github.io/container/documentation/"
-  url "https://github.com/onokatio/container/archive/refs/tags/1.5.0-balloon.tar.gz"
+  url "https://github.com/onokatio/container/archive/refs/tags/1.6.0.tar.gz"
   version "1.5.0-balloon"
-  sha256 "401701a586ee00013147eac02021099d7b7bec53958fcdb3ff92925502ff074b"
+  sha256 "5a5b66eb9ee55890b781d1236b0af807245378a05f082797c2af6400398f756a"
   license "Apache-2.0"
   head "https://github.com/onokatio/container.git", branch: "balloon"
 
